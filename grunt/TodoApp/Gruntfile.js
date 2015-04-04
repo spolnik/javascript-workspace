@@ -99,6 +99,11 @@ module.exports = function(grunt) {
                     out: 'dist/js/main.js',
                     optimize: 'uglify2',
                     mainConfig: 'app/js/paths.js',
+                    shim: {
+                        handlebars: {
+                            exports: 'Handlebars'
+                        }
+                    },
                     paths: {
                         backbone: 'bower_components/backbone/backbone',
                         bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
@@ -124,6 +129,17 @@ module.exports = function(grunt) {
                     'dist/js/main.js': ['app/js/main.js']
                 }
             }
+        },
+        handlebars: {
+            dist: {
+                options: {
+                    namespace: 'JST',
+                    amd: true
+                },
+                files: {
+                    'app/js/template.js': ['build/templates/**/*.hbs']
+                }
+            }
         }
     });
 
@@ -141,6 +157,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
 
     grunt.registerTask('default', [
         'clean',
