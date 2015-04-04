@@ -338,6 +338,12 @@ module.exports = function(grunt) {
                     }
                 }]
             }
+        },
+
+        karma: {
+            all: {
+                configFile: 'tests/karma.conf.js'
+            }
         }
     });
 
@@ -368,6 +374,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-text-replace');
+    grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('default', [
         'clean',

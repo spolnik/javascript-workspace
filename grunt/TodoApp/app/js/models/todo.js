@@ -1,23 +1,15 @@
-'use strict';
+define(['backbone'], function(Backbone) {
+    'use strict';
 
-var Backbone = require('backbone');
+    return Backbone.Model.extend({
+        defaults: {
+            'title': '',
+            'date': '19/02/2015',
+            'complete': false
+        },
 
-module.exports = Backbone.Model.extend({
-    defaults: {
-        'title': '',
-        'date': '19/02/2015',
-        'complete': false
-    },
-
-    complete: function () {
-        this.set('complete', true);
-    },
-
-    undo: function () {
-        this.set('complete', false);
-    },
-
-    hasExpired: function () {
-        return new Date(this.get('date')) < new Date();
-    }
+        complete: function () {
+            this.set('complete', true);
+        }
+    });
 });
