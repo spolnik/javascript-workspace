@@ -3,6 +3,12 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 
+        useminPrepare: {
+            dist: {
+                src: 'app/index.html',
+                dest: 'dist/'
+            }
+        },
         sass: {
             dist: {
                 options: {
@@ -21,6 +27,11 @@ module.exports = function(grunt) {
                 exclude: []
             }
         },
+        autoprefixer: {
+            dist: {
+                src: 'app/css/main.css'
+            }
+        },
         recess: {
             dist: {
                 options: {
@@ -29,21 +40,6 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'src': 'app/css/**/*.css'
-                }
-            }
-        },
-        autoprefixer: {
-            dist: {
-                src: 'app/css/main.css'
-            }
-        },
-        cssmin: {
-            dist: {
-                options: {
-                    report: 'gzip'
-                },
-                files: {
-                    'dist/css/main.css': 'app/css/main.css'
                 }
             }
         },
@@ -62,10 +58,21 @@ module.exports = function(grunt) {
                 dest: 'dist/'
             }
         },
-        useminPrepare: {
+        cssmin: {
             dist: {
-                src: 'app/index.html',
-                dest: 'dist/'
+                options: {
+                    report: 'gzip'
+                },
+                files: {
+                    'dist/css/main.css': 'app/css/main.css'
+                }
+            }
+        },
+        concat: {
+            dist: {
+                files: {
+                    'dist/js/main.js': ['app/js/**/*.js']
+                }
             }
         },
         usemin: {
@@ -73,7 +80,7 @@ module.exports = function(grunt) {
         },
         rev: {
             dist: {
-                src: 'dist/css/main.css'
+                src: ['dist/css/main.css', 'dist/js/main.js']
             }
         },
         bower: {
@@ -81,6 +88,40 @@ module.exports = function(grunt) {
                 rjsConfig: 'app/js/paths.js',
                 options: {
                     baseUrl: 'app/'
+                }
+            }
+        },
+        requirejs: {
+            dist: {
+                options: {
+                    baseUrl: 'app/',
+                    name: '../.tmp/concat/js/main',
+                    out: 'dist/js/main.js',
+                    optimize: 'uglify2',
+                    mainConfig: 'app/js/paths.js',
+                    paths: {
+                        backbone: 'bower_components/backbone/backbone',
+                        bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
+                        jquery: 'bower_components/jquery/dist/jquery',
+                        requirejs: 'bower_components/requirejs/require',
+                        underscore: 'bower_components/underscore/underscore',
+                        handlebars: 'bower_components/handlebars/handlebars'
+                    }
+                }
+            }
+        },
+        clean: {
+            tmp: {
+                src: ['.tmp', '.sass-cache', 'dist', 'app/js/template.js', 'app/js/modernizr.js']
+            }
+        },
+        uglify: {
+            options: {
+                report: 'gzip'
+            },
+            dist: {
+                files: {
+                    'dist/js/main.js': ['app/js/main.js']
                 }
             }
         }
@@ -96,8 +137,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-rev');
     grunt.loadNpmTasks('grunt-bower-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', [
+        'clean',
         'useminPrepare',
         'sass',
         'bowerInstall',
@@ -106,6 +152,8 @@ module.exports = function(grunt) {
         'uncss',
         'copy',
         'cssmin',
+        'concat',
+        'requirejs',
         'rev',
         'usemin'
     ]);
