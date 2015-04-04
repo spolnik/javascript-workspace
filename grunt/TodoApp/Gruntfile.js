@@ -32,6 +32,17 @@ module.exports = function(grunt) {
                 src: 'app/css/main.css'
             }
         },
+        handlebars: {
+            dist: {
+                options: {
+                    namespace: 'JST',
+                    amd: true
+                },
+                files: {
+                    'app/js/template.js': ['build/templates/**/*.hbs']
+                }
+            }
+        },
         recess: {
             dist: {
                 options: {
@@ -129,17 +140,6 @@ module.exports = function(grunt) {
                     'dist/js/main.js': ['app/js/main.js']
                 }
             }
-        },
-        handlebars: {
-            dist: {
-                options: {
-                    namespace: 'JST',
-                    amd: true
-                },
-                files: {
-                    'app/js/template.js': ['build/templates/**/*.hbs']
-                }
-            }
         }
     });
 
@@ -165,6 +165,7 @@ module.exports = function(grunt) {
         'sass',
         'bowerInstall',
         'autoprefixer',
+        'handlebars',
         'recess',
         'uncss',
         'copy',
