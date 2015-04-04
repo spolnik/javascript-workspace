@@ -140,6 +140,41 @@ module.exports = function(grunt) {
                     'dist/js/main.js': ['app/js/main.js']
                 }
             }
+        },
+        jshint: {
+            options: {
+                jshintrc: true
+            },
+            dist: {
+                src: ['Gruntfile.js', 'app/js/**/*.js']
+            },
+            bower: {
+                src: ['app/bower_components/handlebars/handlebars.js']
+            }
+        },
+        modernizr: {
+            dist: {
+                devFile: 'remote',
+                outputFile: 'app/js/modernizr.js',
+                extra: {
+                    shiv: true,
+                    load: false,
+                    cssclasses: true
+                },
+                uglify: true,
+                parseFiles: true,
+                files: {
+                    src: ['build/styles/**/*.scss', 'app/js/**/*.js']
+                }
+            }
+        },
+        jsdoc: {
+            dist: {
+                src: ['app/js/**/*.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
         }
     });
 
@@ -158,6 +193,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-modernizr');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     grunt.registerTask('default', [
         'clean',
@@ -165,6 +203,8 @@ module.exports = function(grunt) {
         'sass',
         'bowerInstall',
         'autoprefixer',
+        'jshint',
+        'modernizr',
         'handlebars',
         'recess',
         'uncss',
