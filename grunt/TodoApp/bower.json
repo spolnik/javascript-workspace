@@ -5,6 +5,8 @@
     "backbone": "~1.1.2"
   },
   "devDependencies": {
-    "bootstrap": "~3.3.4"
+    "bootstrap": "~3.3.4",
+    "requirejs": "~2.1.17",
+    "underscore": "~1.8.3"
   }
 }
