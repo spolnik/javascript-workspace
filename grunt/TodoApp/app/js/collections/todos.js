@@ -1,5 +1,3 @@
-'use strict';
-
 var _ = require('underscore');
 var Todo = require('../models/todo');
 var Backbone = require('backbone');

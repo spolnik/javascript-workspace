@@ -1,5 +1,4 @@
 /*global module:false*/
-
 var pngquant = require('imagemin-pngquant');
 
 module.exports = function(grunt) {
@@ -334,7 +333,7 @@ module.exports = function(grunt) {
                     from: 'FUTURE_DATE',
                     to: function () {
                         var today = new Date();
-                        return new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())
+                        return new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
                     }
                 }]
             }
@@ -346,35 +345,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-bower-install');
-    grunt.loadNpmTasks('grunt-recess');
-    grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-uncss');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-usemin');
-    grunt.loadNpmTasks('grunt-rev');
-    grunt.loadNpmTasks('grunt-bower-requirejs');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-handlebars');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-modernizr');
-    grunt.loadNpmTasks('grunt-jsdoc');
-    grunt.loadNpmTasks('grunt-contrib-imagemin');
-    grunt.loadNpmTasks('grunt-responsive-images');
-    grunt.loadNpmTasks('grunt-spritesmith');
-    grunt.loadNpmTasks('grunt-svgmin');
-    grunt.loadNpmTasks('grunt-svg-sprite');
-    grunt.loadNpmTasks('grunt-webfont');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-nodeunit');
-    grunt.loadNpmTasks('grunt-text-replace');
-    grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('default', [
         'clean',
@@ -416,4 +386,9 @@ module.exports = function(grunt) {
         'usemin',
         'connect:dev'
     ]);
+
+    require('time-grunt')(grunt);
+
+    // Load all grunt tasks
+    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };
