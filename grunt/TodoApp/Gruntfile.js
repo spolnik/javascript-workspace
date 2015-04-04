@@ -289,6 +289,41 @@ module.exports = function(grunt) {
                 src: 'build/svg/**/*.svg',
                 dest: 'app/fonts'
             }
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 8000,
+                    protocol: 'http',
+                    hostname: '*',
+                    base: './app'
+                }
+            },
+            dev: {
+                options: {
+                    port: 8001,
+                    protocol: 'http',
+                    hostname: '*',
+                    base: './app',
+                    keepalive: true,
+                    open: true,
+                    debug: true,
+                    middleware: function(connect, options, middlewares) {
+                        middlewares.unshift(connect.compress());
+                        return middlewares;
+                    }
+                }
+            }
+        },
+
+        nodeunit: {
+            all: ['tests/**/*_test.js'],
+            options: {
+                reporter: 'junit',
+                reporterOptions: {
+                    output: 'out'
+                }
+            }
         }
     });
 
@@ -316,6 +351,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-svgmin');
     grunt.loadNpmTasks('grunt-svg-sprite');
     grunt.loadNpmTasks('grunt-webfont');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
     grunt.registerTask('default', [
         'clean',
@@ -334,6 +371,27 @@ module.exports = function(grunt) {
         'concat',
         'requirejs',
         'rev',
-        'usemin'
+        'usemin',
+        'connect:server'
+    ]);
+
+    grunt.registerTask('serve', [
+        'clean',
+        'useminPrepare',
+        'sass',
+        'bowerInstall',
+        'autoprefixer',
+        'jshint',
+        'modernizr',
+        'handlebars',
+        'imagemin',
+        'uncss',
+        'copy',
+        'cssmin',
+        'concat',
+        'requirejs',
+        'rev',
+        'usemin',
+        'connect:dev'
     ]);
 };
