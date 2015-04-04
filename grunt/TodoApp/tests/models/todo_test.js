@@ -22,5 +22,16 @@ exports.todo = {
         this.todo.complete();
         test.ok(this.todo.get('complete'));
         test.done();
+    },
+    item_can_be_marked_as_incomplete: function (test) {
+        this.todo.complete();
+        this.todo.undo();
+        test.equal(this.todo.get('complete'), false);
+        test.done();
+    },
+    item_has_expired: function (test) {
+        this.todo.set('date', '2011-05-26T07:56:00.123Z');
+        test.ok(this.todo.hasExpired());
+        test.done();
     }
 };

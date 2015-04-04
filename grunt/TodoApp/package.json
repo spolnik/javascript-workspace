@@ -38,9 +38,11 @@
     "grunt-spritesmith": "^4.5.1",
     "grunt-svg-sprite": "^1.0.20",
     "grunt-svgmin": "^2.0.1",
+    "grunt-text-replace": "^0.4.0",
     "grunt-uncss": "^0.4.1",
     "grunt-usemin": "^3.0.0",
-    "grunt-webfont": "^0.5.2"
+    "grunt-webfont": "^0.5.2",
+    "underscore": "^1.8.3"
   },
   "dependencies": {
     "imagemin-pngquant": "^4.0.0"

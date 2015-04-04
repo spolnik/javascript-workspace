@@ -324,6 +324,20 @@ module.exports = function(grunt) {
                     output: 'out'
                 }
             }
+        },
+
+        replace: {
+            fixtures: {
+                src: ['build/fixtures/*.json'],
+                dest: 'tests/fixtures/',
+                replacements: [{
+                    from: 'FUTURE_DATE',
+                    to: function () {
+                        var today = new Date();
+                        return new Date(today.getFullYear() + 1, today.getMonth(), today.getDate())
+                    }
+                }]
+            }
         }
     });
 
@@ -353,6 +367,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-webfont');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
+    grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('default', [
         'clean',

@@ -14,6 +14,10 @@ module.exports = Backbone.Model.extend({
     },
 
     undo: function () {
-        this.set('complete', true);
+        this.set('complete', false);
+    },
+
+    hasExpired: function () {
+        return new Date(this.get('date')) < new Date();
     }
 });
