@@ -1,4 +1,7 @@
 /*global module:false*/
+
+var pngquant = require('imagemin-pngquant');
+
 module.exports = function(grunt) {
 
     grunt.initConfig({
@@ -175,6 +178,117 @@ module.exports = function(grunt) {
                     destination: 'doc'
                 }
             }
+        },
+        imagemin: {
+            app: {
+                options: {
+                    optimizationLevel: 6,
+                    progressive: true,
+                    use: [pngquant()]
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'app/',
+                    src: ['**/*.{png,jpg,gif}'],
+                    dest: 'dist/'
+                }]
+            }
+        },
+        responsive_images: {
+            dest: {
+                options: {
+                    sizes: [{
+                        width: 320,
+                        height: 240
+                    },{
+                        name: 'large',
+                        width: 640
+                    },{
+                        name: "large",
+                        width: 1024,
+                        suffix: "_x2",
+                        quality: 60
+                    }]
+                },
+                files: [{
+                    expand: true,
+                    src: ['img/**.{jpg,gif,png}'],
+                    cwd: 'app/',
+                    dest: 'dist/'
+                }]
+            }
+        },
+        sprite: {
+            all: {
+                src: 'build/icons/*.png',
+                dest: 'app/img/sprite.png',
+                destCss: 'build/styles/_sprite.scss',
+                imgPath: '../img',
+                algorithm: 'top-down',
+                padding: 35,
+                engine: 'pixelsmith',
+                cssFormat: 'scss',
+                imgOpts: {
+                    quality: 90
+                }
+            }
+        },
+        svgmin: {
+            app: {
+                options: {
+                    plugins: [
+                        { removeViewBox: true },
+                        { removeUselessStrokeAndFill: true }
+                    ]
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'build/svg',
+                    src: ['**/*.svg'],
+                    dest: 'app/img/',
+                    ext: '.min.svg'
+                }]
+            }
+        },
+        svg_sprite: {
+            complex: {
+                options: {
+                    shape: {
+                        spacing: {
+                            padding: 35
+                        }
+                    },
+                    mode: {
+                        view: {
+                            render: {
+                                scss: {
+                                    dest: '../../build/styles/_font.scss'
+                                },
+                                css: false
+                            }
+                        }
+                    }
+                    //spritedir: '',
+                    //layout: 'vertical'
+                },
+                expand: true,
+                cwd: 'build/svg',
+                src: ['*.svg'],
+                dest: 'app/img'
+            }
+        },
+        webfont: {
+            icons: {
+                options: {
+                    font: 'custom',
+                    stylesheet: 'less',
+                    relativeFontPath: '../fonts',
+                    htmlDemo: false
+                },
+                destCss: 'build/styles/',
+                src: 'build/svg/**/*.svg',
+                dest: 'app/fonts'
+            }
         }
     });
 
@@ -196,6 +310,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-modernizr');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
+    grunt.loadNpmTasks('grunt-responsive-images');
+    grunt.loadNpmTasks('grunt-spritesmith');
+    grunt.loadNpmTasks('grunt-svgmin');
+    grunt.loadNpmTasks('grunt-svg-sprite');
+    grunt.loadNpmTasks('grunt-webfont');
 
     grunt.registerTask('default', [
         'clean',
@@ -206,6 +326,7 @@ module.exports = function(grunt) {
         'jshint',
         'modernizr',
         'handlebars',
+        'imagemin',
         'recess',
         'uncss',
         'copy',

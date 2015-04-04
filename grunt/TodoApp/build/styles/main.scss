@@ -9,6 +9,13 @@ h1 {
   transition: transform 1s;
 }
 
+.profile {
+  .boxshadow {
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+  }
+}
+
+
 .aside {
   background: $aside-color;
 }
