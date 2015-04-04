@@ -1,6 +1,8 @@
 requirejs.config({
     shim: {
-        exports: 'Handlebars'
+        handlebars: {
+            exports: 'Handlebars'
+        }
     },
     paths: {
         backbone: "bower_components/backbone/backbone",
@@ -8,7 +10,8 @@ requirejs.config({
         jquery: "bower_components/jquery/dist/jquery",
         requirejs: "bower_components/requirejs/require",
         underscore: 'bower_components/underscore/underscore',
-        handlebars: 'bower_components/handlebars/handlebars'
+        handlebars: 'bower_components/handlebars/handlebars',
+        modernizr: 'bower_components/modernizr/modernizr'
     },
     packages: []
 });

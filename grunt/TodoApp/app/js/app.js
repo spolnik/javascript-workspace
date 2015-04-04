@@ -9,6 +9,10 @@ define([
         var todos = new Collection();
         new FormView().render();
         new TodoView(todos).render();
+        /*@csstransforms3d*/
+        if (Modernizr.localstorage) {
+            var item = localStorage.getItem("favourite");
+        }
     };
 
     return {

@@ -14,7 +14,7 @@ module.exports = function(config) {
         reporters: ['progress'],
 
         runnerPort: 9000,
-        singleRun: false,
+        singleRun: true,
         browsers: ['PhantomJS', 'Chrome'],
         logLevel: 'ERROR'
     });
