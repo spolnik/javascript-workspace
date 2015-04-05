@@ -22,6 +22,7 @@ module.exports = function (grunt) {
         base: './app',
         open: true,
         debug: true,
+        keepalive: true,
         middleware: function(connect, options, middlewares) {
           middlewares.unshift(connect.compress());
           return middlewares;

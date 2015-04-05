@@ -1,9 +1,22 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'js/template'], function(Backbone, Template) {
     return Backbone.View.extend({
-        tagName: 'li',
-        className: 'todo-item',
-        render: function() {
 
+        el: '#todo-list',
+
+        template: Template["build/templates/todo-list.hbs"],
+
+        model: null,
+
+        render: function() {
+            var self = this;
+
+            self.$el.append(
+                this.template(this.model.toJSON())
+            );
+
+            console.log(this.model.toJSON());
+
+            return self;
         }
     });
 });

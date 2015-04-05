@@ -2,17 +2,27 @@ define([
     'js/collections/todos',
     'js/views/form',
     'js/views/todo-item'
-], function (Collection, FormView, TodoView) {
+], function (TodoCollection, FormView, TodoView) {
 
     var initialize = function () {
         console.log('app.init');
-        var todos = new Collection();
+        var todoItems = new TodoCollection();
+
+        todoItems.fetch({
+            success: function(e) {
+                console.log('Got data. Items now has ' + todoItems.size() + ' todo items.');
+
+                new TodoView({
+                    model: todoItems
+                }).render();
+            },
+            error: function(e) {
+                console.log('Something went wrong');
+            }
+        });
+
         new FormView().render();
-        new TodoView(todos).render();
-        /*@csstransforms3d*/
-        if (Modernizr.localstorage) {
-            var item = localStorage.getItem("favourite");
-        }
+
     };
 
     return {

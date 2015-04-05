@@ -7,7 +7,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dependencies', ['bowerInstall']);
   grunt.registerTask('js', ['newer:jshint', 'handlebars']);
   grunt.registerTask('minify', ['copy', 'cssmin', 'newer:concat', 'rev', 'usemin']);
-  grunt.registerTask('build', ['prepare', 'dependencies', 'css', 'js', 'minify']);
+  grunt.registerTask('build', ['prepare', 'dependencies', 'css', 'js', 'minify', 'modernizr']);
 
 
   grunt.registerTask('default', ['build', 'connect:server', 'watch']);

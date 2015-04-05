@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     'handlebars', {
     dist: {
       options: {
-        //namespace: 'JST',
+        namespace: 'JST',
         amd: true
       },
       files: {

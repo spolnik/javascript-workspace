@@ -1,0 +1,15 @@
+<ul class="list-group">
+    {{#each []}}
+        <li class="list-group-item clearfix task">
+            <p class="lead">{{this.title}}</p>
+            <div>
+          <span class="pull-right">
+            <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
+            <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-repeat"></span></button>
+            <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+          </span>
+            </div>
+        </li>
+    {{/each}}
+</ul>
