@@ -5,8 +5,7 @@ angular.module('app')
             if ($scope.postBody) {
                 PostsSvc.create({
                     body: $scope.postBody
-                }).success(function (post) {
-                    $scope.posts.unshift(post);
+                }).success(function () {
                     $scope.postBody = null;
                 });
             }
@@ -16,4 +15,10 @@ angular.module('app')
             .success(function (posts) {
                 $scope.posts = posts;
             });
+
+        $scope.$on('ws:new_post', function (_, post) {
+            $scope.$apply(function () {
+                $scope.posts.unshift(post);
+            });
+        });
     });
