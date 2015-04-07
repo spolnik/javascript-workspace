@@ -1,5 +1,5 @@
-var Post = require('../../model/posts');
 var router = require('express').Router();
+var Post = require('../../models/post');
 
 router.get('/posts', function (req, res, next) {
     Post.find()
