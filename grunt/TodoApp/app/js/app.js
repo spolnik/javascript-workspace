@@ -23,6 +23,7 @@ define([
 
         new FormView().render();
 
+        Backbone.history.start();
     };
 
     return {

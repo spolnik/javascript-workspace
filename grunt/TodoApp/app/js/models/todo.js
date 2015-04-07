@@ -10,18 +10,14 @@ define(['backbone'], function (Backbone) {
         },
 
         defaults: {
-            'id': null,
-            'title': '',
-            'date': '19/02/2015',
-            'complete': false
+            id: null,
+            title: '',
+            date: '19/02/2015',
+            done: false
         },
 
-        complete: function () {
-            this.set('complete', true);
-        },
-
-        undo: function () {
-            this.set('complete', false);
+        toggle: function () {
+            this.save({done: !this.get('done')});
         },
 
         hasExpired: function () {

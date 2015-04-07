@@ -23,6 +23,14 @@ define(['backbone', 'underscore', 'js/models/todo'], function (Backbone, _, Todo
             });
         },
 
+        done: function() {
+            return this.where({done: true});
+        },
+
+        remaining: function() {
+            return this.where({done: false});
+        },
+
         comparator:  function(a, b) {
             return a.get('title') < b.get('title') ? -1 : 1;
         }
