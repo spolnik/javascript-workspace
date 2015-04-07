@@ -14,9 +14,14 @@ router.get('/posts', function (req, res, next) {
 
 router.post('/posts', function (req, res, next) {
     var post = new Post({
+        username: 'guest',
         body: req.body.body
     });
-    post.username = req.auth.username;
+
+    if (req.auth && req.auth.username) {
+        post.username = req.auth.username;
+    }
+
     post.save(function (err, post) {
         if (err) {
             return next(err);
