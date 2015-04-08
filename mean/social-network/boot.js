@@ -1,4 +1,3 @@
-'use strict';
 var numCpus = require('os').cpus().length;
 var cluster = require('cluster');
 
