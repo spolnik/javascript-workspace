@@ -5,7 +5,7 @@ angular.module('app')
             var connection = new WebSocket(url);
 
             connection.onopen = function () {
-                console.log('WebSocket connected')
+                console.log('WebSocket connected');
             };
 
             connection.onclose = function (e) {

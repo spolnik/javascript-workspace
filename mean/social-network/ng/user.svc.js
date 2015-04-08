@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('UserSvc', function ($http) {
+    .service('UserSvc', function ($http, $location, $window) {
         var svc = this;
 
         svc.getUser = function () {
@@ -17,6 +17,12 @@ angular.module('app')
                 $http.defaults.headers.common['X-Auth'] = response.data;
                 return svc.getUser();
             });
+        };
+
+        svc.logout = function() {
+            $http.defaults.headers.common['X-Auth'] = null;
+            $location.path('/');
+            $window.location.reload();
         };
 
         svc.register = function (username, password) {
