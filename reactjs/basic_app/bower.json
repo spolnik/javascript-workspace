@@ -1,0 +1,23 @@
+{
+  "name": "basic_app",
+  "version": "0.0.0",
+  "homepage": "https://github.com/spolnik/javascript-workspace",
+  "authors": [
+    "Jacek Spolnik <jacek.spolnik@gmail.com>"
+  ],
+  "main": "helloworld.html",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.3"
+  }
+}
