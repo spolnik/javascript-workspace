@@ -1,9 +1,4 @@
-var data = [
-    { author: "Julia Spolnik", text: "This is awesome comment" },
-    { author: "Mikolaj Spolnik", text: "Hey daddy!" }
-];
-
 React.render(
-    <CommentBox data={data} />,
+    <CommentBox url="comments.json" pollInterval={2000} />,
     document.getElementById('content')
 );
