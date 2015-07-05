@@ -2,44 +2,6 @@ var priceToUSDString = function(price) {
     return '$' + price.toFixed(2);
 };
 
-var ShoppingItemQuantity = React.createClass({
-    propTypes: {
-        item: React.PropTypes.object.isRequired,
-        onChange: React.PropTypes.func.isRequired
-    },
-
-    render: function () {
-        return <div><input className="spin-here" /></div>
-    },
-
-    spinnerInput: function() {
-        return $('.spin-here', this.getDOMNode());
-    },
-
-    componentDidMount: function() {
-        var spinnerInput = this.spinnerInput();
-        spinnerInput.spinner({
-            min: 0,
-            spin: this.props.onChange
-        });
-        spinnerInput.spinner('value', this.props.item.get('quantity'));
-        spinnerInput.on('change', this.props.onChange);
-    },
-
-    componentWillReceiveProps: function (nextProps) {
-        this.spinnerInput()
-            .spinner('value', nextProps.item.get('quantity'));
-    },
-
-    shouldComponentUpdate: function (nextProps) {
-        return false;
-    },
-
-    componentWillUnmount: function () {
-        this.spinnerInput().spinner('destroy');
-    }
-});
-
 var ShoppingItemRow = React.createClass({
     propTypes: {
         item: React.PropTypes.object
@@ -49,33 +11,40 @@ var ShoppingItemRow = React.createClass({
         var item = this.props.item;
         return <li>
             <ul>
-                <li className="name">{item.get('name')}</li>
+                <li className="name">{item.name}</li>
                 <li className="quantity">
-                    <ShoppingItemQuantity item={item}
-                                          onChange={this.onChangeQuantity} />
+                    <NumberSpinner value={item.quantity}
+                                   onChange={this.onChangeQuantity} />
+                    {item.quantity === 0 ?
+                        <a className="remove" onClick={this.removeItem}>×</a>
+                        :
+                        null}
                 </li>
                 <li className="price">
-                    {priceToUSDString(item.get('quantity') * item.get('price'))}
+                    {priceToUSDString(item.quantity * item.price)}
                 </li>
             </ul>
         </li>;
     },
 
-    onChangeQuantity: function (event, ui) {
-        this.props.item.set('quantity', ui ? ui.value : event.target.value);
+    onChangeQuantity: function(value) {
+        fire(ListActions.changeQuantity(this.props.item.id, value));
+    },
+
+    removeItem: function() {
+        fire(ListActions.removeItem(this.props.item.id));
     }
 });
 
 var ShoppingTotal = React.createClass({
     propTypes: {
-        items: React.PropTypes.arrayOf(React.PropTypes.object)
+        list: React.PropTypes.array
     },
 
     render: function() {
-        var total = this.props.collection.reduce(function(runningTotal, item) {
-            return (item.get('price') * item.get('quantity')) + runningTotal;
+        var total = this.props.list.reduce(function(runningTotal, item) {
+            return (item.price * item.quantity) + runningTotal;
         }, 0);
-
         return <ul className="total">
             <li>Total</li>
             <li>{priceToUSDString(total)}</li>
@@ -85,17 +54,22 @@ var ShoppingTotal = React.createClass({
 
 var ShoppingList = React.createClass({
     propTypes: {
-        items: React.PropTypes.arrayOf(React.PropTypes.object)
+        list: React.PropTypes.array.isRequired
     },
 
     render: function() {
+        var listComponents = this.props.list.map(function(item) {
+            return <ShoppingItemRow item={item} key={item.name} />;
+        });
+
         return <div>
             <ol className="items">
-                {this.props.collection.map(function(item) {
-                    return <ShoppingItemRow item={item} />
-                })}
+                {listComponents.length ?
+                    listComponents
+                    :
+                    <li className="empty">No items</li>}
             </ol>
-            <ShoppingTotal collection={this.props.collection} />
+            <ShoppingTotal list={this.props.list} />
         </div>;
     }
 });

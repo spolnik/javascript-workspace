@@ -1,43 +1,62 @@
-var itemList = [
-    {
+var items = {
+    0: {
+        id: 0,
         name: 'Sleeping Bag w/ Stuff Sack',
-        quantity: 1,
-        price: 44.99
+        price: 44.99,
+        description: 'Fill in some information about this product.'
     },
-    {
+    1: {
+        id: 1,
         name: 'Chocolate Energy Bar',
-        quantity: 4,
-        price: 2.99 * 4
+        price: 2.99,
+        description: 'Fill in some information about this product.'
     },
-    {
+    2: {
+        id: 2,
         name: '2-Person Polyethylene Tent',
-        quantity: 1,
-        price: 104.33
-    }
-];
-
-document.onreadystatechange = function() {
-    if (document.readyState === "complete") {
-        var renderShoppingList = function renderShoppingList(coll) {
-            React.render(React.createElement(ShoppingList, {collection: coll}),
-                document.getElementById('here'));
-        };
-
-        var ShoppingItem = Backbone.Model.extend();
-
-        var ShoppingItemsCollection = Backbone.Collection.extend({
-            model: ShoppingItem,
-
-            initialize: function() {
-                this.on('change', function() {
-                    renderShoppingList(this)
-                }.bind(this));
-            }
-        });
-
-        var shoppingList = new ShoppingItemsCollection(itemList);
-        renderShoppingList(shoppingList);
+        price: 104.33,
+        description: 'Fill in some information about this product.'
     }
 };
 
+var ShoppingApp = React.createClass({displayName: "ShoppingApp",
+    render: function () {
+        return React.createElement("main", null, 
+            React.createElement(NavTabs, null), 
 
+            AppStore.currentTab() === 'items' ?
+                React.createElement(ItemCatalog, {startingItems: this.props.items})
+                :
+                React.createElement(ShoppingList, {ref: "list", list: ListStore.getList()})
+            
+        );
+    },
+
+    componentWillMount: function () {
+        AppStore.addListener('change', this.update);
+        ListStore.addListener('change', this.update);
+    },
+
+    componentWillUnmount: function() {
+        AppStore.removeListener('change', this.update);
+        ListStore.removeListener('change', this.update);
+    },
+
+    update: function() {
+        this.forceUpdate();
+    }
+});
+
+document.onreadystatechange = function() {
+    if (document.readyState === 'complete') {
+        var renderShoppingList = function renderShoppingList() {
+            React.render(
+                React.createElement(ShoppingApp, {items: items}),
+                document.getElementById('here')
+            );
+        };
+
+        renderShoppingList();
+        fire(ItemActions._rawSetItems(items));
+    }
+};

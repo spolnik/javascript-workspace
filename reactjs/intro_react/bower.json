@@ -18,8 +18,9 @@
   ],
   "dependencies": {
     "react": "~0.13.3",
-    "jquery-ui": "~1.11.4",
-    "backbone": "~1.2.1",
-    "es5-shim": "~4.1.8"
+    "es5-shim": "~4.1.8",
+    "flux": "~2.0.2",
+    "event-emitter": "~0.1.0",
+    "eventemitter": "~1.0.0"
   }
 }

@@ -2,44 +2,6 @@ var priceToUSDString = function(price) {
     return '$' + price.toFixed(2);
 };
 
-var ShoppingItemQuantity = React.createClass({displayName: "ShoppingItemQuantity",
-    propTypes: {
-        item: React.PropTypes.object.isRequired,
-        onChange: React.PropTypes.func.isRequired
-    },
-
-    render: function () {
-        return React.createElement("div", null, React.createElement("input", {className: "spin-here"}))
-    },
-
-    spinnerInput: function() {
-        return $('.spin-here', this.getDOMNode());
-    },
-
-    componentDidMount: function() {
-        var spinnerInput = this.spinnerInput();
-        spinnerInput.spinner({
-            min: 0,
-            spin: this.props.onChange
-        });
-        spinnerInput.spinner('value', this.props.item.get('quantity'));
-        spinnerInput.on('change', this.props.onChange);
-    },
-
-    componentWillReceiveProps: function (nextProps) {
-        this.spinnerInput()
-            .spinner('value', nextProps.item.get('quantity'));
-    },
-
-    shouldComponentUpdate: function (nextProps) {
-        return false;
-    },
-
-    componentWillUnmount: function () {
-        this.spinnerInput().spinner('destroy');
-    }
-});
-
 var ShoppingItemRow = React.createClass({displayName: "ShoppingItemRow",
     propTypes: {
         item: React.PropTypes.object
@@ -49,33 +11,40 @@ var ShoppingItemRow = React.createClass({displayName: "ShoppingItemRow",
         var item = this.props.item;
         return React.createElement("li", null, 
             React.createElement("ul", null, 
-                React.createElement("li", {className: "name"}, item.get('name')), 
+                React.createElement("li", {className: "name"}, item.name), 
                 React.createElement("li", {className: "quantity"}, 
-                    React.createElement(ShoppingItemQuantity, {item: item, 
-                                          onChange: this.onChangeQuantity})
+                    React.createElement(NumberSpinner, {value: item.quantity, 
+                                   onChange: this.onChangeQuantity}), 
+                    item.quantity === 0 ?
+                        React.createElement("a", {className: "remove", onClick: this.removeItem}, "×")
+                        :
+                        null
                 ), 
                 React.createElement("li", {className: "price"}, 
-                    priceToUSDString(item.get('quantity') * item.get('price'))
+                    priceToUSDString(item.quantity * item.price)
                 )
             )
         );
     },
 
-    onChangeQuantity: function (event, ui) {
-        this.props.item.set('quantity', ui ? ui.value : event.target.value);
+    onChangeQuantity: function(value) {
+        fire(ListActions.changeQuantity(this.props.item.id, value));
+    },
+
+    removeItem: function() {
+        fire(ListActions.removeItem(this.props.item.id));
     }
 });
 
 var ShoppingTotal = React.createClass({displayName: "ShoppingTotal",
     propTypes: {
-        items: React.PropTypes.arrayOf(React.PropTypes.object)
+        list: React.PropTypes.array
     },
 
     render: function() {
-        var total = this.props.collection.reduce(function(runningTotal, item) {
-            return (item.get('price') * item.get('quantity')) + runningTotal;
+        var total = this.props.list.reduce(function(runningTotal, item) {
+            return (item.price * item.quantity) + runningTotal;
         }, 0);
-
         return React.createElement("ul", {className: "total"}, 
             React.createElement("li", null, "Total"), 
             React.createElement("li", null, priceToUSDString(total))
@@ -85,17 +54,22 @@ var ShoppingTotal = React.createClass({displayName: "ShoppingTotal",
 
 var ShoppingList = React.createClass({displayName: "ShoppingList",
     propTypes: {
-        items: React.PropTypes.arrayOf(React.PropTypes.object)
+        list: React.PropTypes.array.isRequired
     },
 
     render: function() {
+        var listComponents = this.props.list.map(function(item) {
+            return React.createElement(ShoppingItemRow, {item: item, key: item.name});
+        });
+
         return React.createElement("div", null, 
             React.createElement("ol", {className: "items"}, 
-                this.props.collection.map(function(item) {
-                    return React.createElement(ShoppingItemRow, {item: item})
-                })
+                listComponents.length ?
+                    listComponents
+                    :
+                    React.createElement("li", {className: "empty"}, "No items")
             ), 
-            React.createElement(ShoppingTotal, {collection: this.props.collection})
+            React.createElement(ShoppingTotal, {list: this.props.list})
         );
     }
 });
