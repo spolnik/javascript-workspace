@@ -2,7 +2,7 @@ var priceToUSDString = function(price) {
     return '$' + price.toFixed(2);
 };
 
-var ShoppingItemRow = React.createClass({displayName: "ShoppingItemRow",
+var ShoppingItemRow = React.createClass({
     propTypes: {
         item: React.PropTypes.object
     },
@@ -16,16 +16,16 @@ var ShoppingItemRow = React.createClass({displayName: "ShoppingItemRow",
             if (fieldName === 'price') {
                 value = priceToUSDString(value);
             }
-            fields.push(React.createElement("li", {className: fieldName, key: fieldName}, value));
+            fields.push(<li className={fieldName} key={fieldName}>{value}</li>);
         }
 
-        return React.createElement("li", null, 
-            React.createElement("ul", null, fields)
-        );
+        return <li>
+            <ul>{fields}</ul>
+        </li>;
     }
 });
 
-var ShoppingTotal = React.createClass({displayName: "ShoppingTotal",
+var ShoppingTotal = React.createClass({
     propTypes: {
         items: React.PropTypes.arrayOf(React.PropTypes.object)
     },
@@ -35,27 +35,27 @@ var ShoppingTotal = React.createClass({displayName: "ShoppingTotal",
             return item.price + runningTotal;
         }, 0);
 
-        return React.createElement("ul", {className: "total"}, 
-            React.createElement("li", null, "Total"), 
-            React.createElement("li", null, priceToUSDString(total))
-        );
+        return <ul className="total">
+            <li>Total</li>
+            <li>{priceToUSDString(total)}</li>
+        </ul>;
     }
 });
 
-var ShoppingList = React.createClass({displayName: "ShoppingList",
+var ShoppingList = React.createClass({
     propTypes: {
         items: React.PropTypes.arrayOf(React.PropTypes.object)
     },
 
     render: function() {
-        return React.createElement("div", null, 
-            React.createElement("ol", {className: "items"}, 
-                this.props.items.map(function(item) {
-                    return React.createElement(ShoppingItemRow, {item: item})
-                })
-            ), 
-            React.createElement(ShoppingTotal, React.__spread({},  this.props))
-        );
+        return <div>
+            <ol className="items">
+                {this.props.items.map(function(item) {
+                    return <ShoppingItemRow item={item} />
+                })}
+            </ol>
+            <ShoppingTotal {...this.props} />
+        </div>;
     }
 });
 
@@ -77,4 +77,4 @@ var itemList = [
     }
 ];
 
-React.render(React.createElement(ShoppingList, {items: itemList}), document.getElementById('here'));
+React.render(<ShoppingList items={itemList} />, document.getElementById('here'));

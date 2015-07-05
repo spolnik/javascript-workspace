@@ -1,0 +1,1 @@
+to recompile ShoppingList.js, use 'jsx -x jsx . .' command
