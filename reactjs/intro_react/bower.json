@@ -17,6 +17,9 @@
     "tests"
   ],
   "dependencies": {
-    "react": "~0.13.3"
+    "react": "~0.13.3",
+    "jquery-ui": "~1.11.4",
+    "backbone": "~1.2.1",
+    "es5-shim": "~4.1.8"
   }
 }

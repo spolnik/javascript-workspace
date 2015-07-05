@@ -8,16 +8,17 @@ ol.items {
     margin-bottom: 0;
 }
 
-li {
+ol.items li, ul.total li {
     border-top: 1px solid black;
     list-style: none;
 }
-li:first-of-type {
+ol.items li:first-of-type,
+ul.total li:first-of-type {
     border-top: none;
     border-left: none;
 }
 
-ul > li {
+ol.items ul li, ul.total li {
     border-top: none;
     border-left: 1px solid black;
     display: inline-block;
@@ -25,7 +26,7 @@ ul > li {
     width: 30%;
 }
 
-ul {
+ol.items ul, ul.total {
     padding-left: 0;
     display: block;
     width: 650px;
@@ -38,6 +39,10 @@ ul.total {
     border-top: none;
     margin-top: 0;
 }
-ul.total > li {
+ul.total li {
     width: 44.8%;
+}
+
+.spin-here {
+    width: 50%;
 }
